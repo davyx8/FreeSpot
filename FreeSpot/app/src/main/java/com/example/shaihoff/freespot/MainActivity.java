@@ -8,7 +8,7 @@ import android.view.*;
 import android.content.Intent;
 import android.widget.Button;
 import java.sql.Timestamp;
-import java.util.Date;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -116,13 +116,6 @@ public class MainActivity extends Activity {
     }
 
 
-
-
-//    public static String get_text_1()
-//    {
-//        return P1;
-//
-//    }
 
 
 

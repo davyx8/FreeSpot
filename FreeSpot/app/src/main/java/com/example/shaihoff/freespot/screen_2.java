@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -21,24 +23,10 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 public class screen_2 extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.screen_2);
-        WebView myWebView = (WebView)findViewById(R.id.webview);
-        WebSettings webSettings = myWebView.getSettings();
-        myWebView.setInitialScale(getScale());
-        myWebView.getSettings().setUseWideViewPort(true);
-        webSettings.setJavaScriptEnabled(true);
-        myWebView.getSettings().setLoadWithOverviewMode(true);
-
-
-        myWebView.loadUrl("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=2");
-
-    }
 
 
     @Override
@@ -49,25 +37,37 @@ public class screen_2 extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.screen_2);
+        WebView myWebView = (WebView)findViewById(R.id.webview);
+        WebSettings webSettings = myWebView.getSettings();
+        myWebView.getSettings().setUseWideViewPort(true);
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.getSettings().setLoadWithOverviewMode(true);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        myWebView.loadUrl("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=2");
+
+
+
+
+
+
+    Runnable runny = new Runnable() {
+
+        private String url;
+
+        public Runnable setURL(String url) {
+            this.url = url;
+            return this;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public String readJSONFeed(String URL) {
+        @Override
+        public void run() {
         StringBuilder stringBuilder = new StringBuilder();
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(URL);
+        HttpGet httpGet = new HttpGet(url);
         try {
             HttpResponse response = httpClient.execute(httpGet);
             StatusLine statusLine = response.getStatusLine();
@@ -90,12 +90,38 @@ public class screen_2 extends Activity {
             if(e.getLocalizedMessage() != null) {
                 Log.d("readJSONFeed", e.getLocalizedMessage());
             }
-
+            LinearLayout rl = (LinearLayout) findViewById(R.id.root_view);
+            rl.postDelayed( this, 5000);
         }
-        return stringBuilder.toString();
+
+
+// Add the request to the RequestQueue.
+        }
+    }.setURL("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=1");
+
+        LinearLayout rl2 = (LinearLayout) findViewById(R.id.root_view);
+        rl2.post(runny);
+
+
+
     }
 
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private int getScale(){
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();

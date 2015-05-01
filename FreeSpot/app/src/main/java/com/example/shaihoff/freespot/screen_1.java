@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -21,6 +23,8 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class screen_1 extends Activity {
 
@@ -30,14 +34,64 @@ public class screen_1 extends Activity {
         setContentView(R.layout.activity_main_activity2);
         WebView myWebView = (WebView)findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
-        myWebView.setInitialScale(getScale());
+        //myWebView.setInitialScale(getScale());
         myWebView.getSettings().setUseWideViewPort(true);
         webSettings.setJavaScriptEnabled(true);
         myWebView.getSettings().setLoadWithOverviewMode(true);
 
 
         myWebView.loadUrl("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=1");
+
 //        setContentView(R.layout.activity_main_activity2);
+        Runnable runny = new Runnable() {
+
+            private String url;
+
+            public Runnable setURL(String url) {
+                this.url = url;
+                return this;
+            }
+
+            @Override
+            public void run() {
+                StringBuilder stringBuilder = new StringBuilder();
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse response = httpClient.execute(httpGet);
+                    StatusLine statusLine = response.getStatusLine();
+                    int statusCode = statusLine.getStatusCode();
+                    Log.d("shay","in here");
+                    if (statusCode == 200) {
+                        HttpEntity entity = response.getEntity();
+                        InputStream inputStream = entity.getContent();
+                        BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(inputStream));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            stringBuilder.append(line);
+                        }
+                        inputStream.close();
+                    } else {
+                        Log.d("JSON", "Failed to download file");
+                    }
+                } catch (Exception e) {
+                    if(e.getLocalizedMessage() != null) {
+                        Log.d("readJSONFeed", e.getLocalizedMessage());
+                    }
+
+                }
+                LinearLayout rl = (LinearLayout) findViewById(R.id.root_view);
+                rl.postDelayed( this, 5000);
+            }
+
+
+// Add the request to the RequestQueue.
+        }.setURL("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=1");
+
+        LinearLayout rl2 = (LinearLayout) findViewById(R.id.root_view);
+        rl2.post(runny);
+
 
     }
 
@@ -65,45 +119,7 @@ public class screen_1 extends Activity {
     }
 
 
-    public String readJSONFeed(String URL) {
-        StringBuilder stringBuilder = new StringBuilder();
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(URL);
-        try {
-            HttpResponse response = httpClient.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            Log.d("shay","in here");
-            if (statusCode == 200) {
-                HttpEntity entity = response.getEntity();
-                InputStream inputStream = entity.getContent();
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    stringBuilder.append(line);
-                }
-                inputStream.close();
-            } else {
-                Log.d("JSON", "Failed to download file");
-            }
-        } catch (Exception e) {
-            if(e.getLocalizedMessage() != null) {
-            Log.d("readJSONFeed", e.getLocalizedMessage());
-            }
+
+
 
         }
-        return stringBuilder.toString();
-    }
-
-    private int getScale(){
-        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int width = display.getWidth();
-        Double val = new Double(width)/new Double(1200);
-        val = val * 100d;
-        return val.intValue();
-    }
-
-
-
-}
