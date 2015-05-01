@@ -1,15 +1,15 @@
 package com.example.shaihoff.freespot;
 
-import android.os.AsyncTask;
-import android.os.StrictMode;
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -17,13 +17,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-public class MainActivity2Activity extends ActionBarActivity {
+public class screen_1 extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,13 @@ public class MainActivity2Activity extends ActionBarActivity {
         setContentView(R.layout.activity_main_activity2);
         WebView myWebView = (WebView)findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
+        myWebView.setInitialScale(getScale());
+        myWebView.getSettings().setUseWideViewPort(true);
         webSettings.setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://stone.md.huji.ac.il/huji/mobile/index.php");
+        myWebView.getSettings().setLoadWithOverviewMode(true);
+
+
+        myWebView.loadUrl("http://stone.md.huji.ac.il/huji/mobile/index.php?lab=1");
 //        setContentView(R.layout.activity_main_activity2);
 
     }
@@ -41,7 +45,7 @@ public class MainActivity2Activity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+        getMenuInflater().inflate(R.menu.screen_1, menu);
         return true;
     }
 
@@ -90,6 +94,14 @@ public class MainActivity2Activity extends ActionBarActivity {
 
         }
         return stringBuilder.toString();
+    }
+
+    private int getScale(){
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        Double val = new Double(width)/new Double(1200);
+        val = val * 100d;
+        return val.intValue();
     }
 
 

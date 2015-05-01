@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/exploded-aar/com.beardedhen/androidbootstrap/1.2.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5b26560d38c480aa5c8413a9f43bd205afb123d7">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/classes-53f8a9b6dce25d7b1ff6b2cbe1d5565e7d0e4430.jar" />
+    </item>
+    <item
+        jar="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/classes-5bd23dd0a55e293191331ff63199f73747261ae8.jar" />
+    </item>
+    <item
+        jar="/tmp/Android/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-a68844613924bf0418ddb8dec4eb6529e4ecdce9.jar" />
+    </item>
+    <item
+        jar="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/classes-bce2c223acb04462a8591770e238efd76c0a8b5e.jar" />
+    </item>
+    <item
+        jar="/a/fr-05/vol/prime/stud/shaihoff/.gradle/caches/modules-2/files-2.1/com.mcxiaoke.volley/library/1.0.15/9093a362d18c5f81f58e49d86dece57d9b6e1cb7/library-1.0.15.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9093a362d18c5f81f58e49d86dece57d9b6e1cb7">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/library-1.0.15-ae8669e5e57dd4b2c966d76f6c5f80725d3e833d.jar" />
+    </item>
+    <item
+        jar="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/libs/internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="/tmp/AndroidStudioProjects/FreeSpot/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-fa7f33a81e020a9c5d16491951408c5aee7ebf08.jar" />
+    </item>
+
+</items>
