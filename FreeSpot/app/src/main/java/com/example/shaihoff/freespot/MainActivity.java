@@ -1,11 +1,14 @@
 package com.example.shaihoff.freespot;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.content.Intent;
 import android.widget.Button;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
 
@@ -33,68 +37,82 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
         //double [] darry = new double [3];
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://stone.md.huji.ac.il/huji/mobile/occupancy.php";
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        final String url ="http://stone.md.huji.ac.il/huji/mobile/occupancy.php";
 
+        Runnable runny = new Runnable() {
+            @Override
+            public void run() {
 
 // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+                java.util.Date date= new java.util.Date();
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, (url + "?d=" + new Timestamp(date.getTime())),
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                try
+                                {
+                                    JSONObject json = new JSONObject(response);
+                                    JSONObject lab1= json.getJSONObject("Lab_1");
+                                    JSONObject lab2= json.getJSONObject("Lab_2");
+                                    JSONObject lab3= json.getJSONObject("Lab_3");
+                                    // System.out.  (lab1 );
+
+
+                                    double copasety1=Math.round((Integer.parseInt(lab1.getString("Used"))) / (1.0 * Integer.parseInt(lab1.getString("Capacity"))) * 10000)/100;
+                                    double copasety2= Math.round((Integer.parseInt(lab2.getString("Used")) /(1.0* Integer.parseInt(lab2.getString("Capacity")))*10000) )/100;
+                                    double copasety3= Math.round((Integer.parseInt(lab3.getString("Used")) / 1.0*Integer.parseInt(lab3.getString("Capacity"))) *10000 )/100;;
+
+
+
+                                    System.out.println(Double.toString(copasety1));
+                                    System.out.println(Double.toString(copasety2));
+                                    System.out.println(Double.toString(copasety3));
+
+
+
+
+                                    BootstrapButton p1_button = (BootstrapButton) findViewById(button);
+                                         String p1= "New Aquarium A   "+Double.toString(copasety1)+"%";
+                                   // String p1= "New Aquarium A   73.0%";
+                                    p1_button.setText(p1);
+                                    //myTextView.setText(p1);
+
+
+                                    BootstrapButton p2_button = (BootstrapButton) findViewById(R.id.button2);
+                                    String p2= "New Aquarium C   "+Double.toString(copasety2)+"%";
+//                                    String p2= "New Aquarium C   28.2%";
+                                    p2_button.setText(p2);
+
+                                    BootstrapButton p3_button = (BootstrapButton) findViewById(R.id.button3);
+                                         String p3= "Old  Aquarium       "+Double.toString(copasety3)+"%";
+//                                    String p3= "Old  Aquarium       92.4%";
+                                    p3_button.setText(p3);
+
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                                Log.d("", "");
+                                Log.d("", "");
+                            }
+                        }, new Response.ErrorListener() {
                     @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        try
-                        {
-                            JSONObject json = new JSONObject(response);
-                            JSONObject lab1= json.getJSONObject("Lab_1");
-                            JSONObject lab2= json.getJSONObject("Lab_2");
-                            JSONObject lab3= json.getJSONObject("Lab_3");
-                           // System.out.  (lab1 );
-
-
-                            double copasety1=Math.round((Integer.parseInt(lab1.getString("Used"))) / (1.0 * Integer.parseInt(lab1.getString("Capacity"))) * 10000)/100;
-                            double copasety2= Math.round((1.0)*(Integer.parseInt(lab2.getString("Used")) /1.0* Integer.parseInt(lab2.getString("Capacity"))*10000) )/100;
-                            double copasety3= Math.round((Integer.parseInt(lab3.getString("Used")) / 1.0*Integer.parseInt(lab3.getString("Capacity"))) *10000 )/100;;
-
-
-
-                            System.out.println(Double.toString(copasety1));
-                            System.out.println(Double.toString(copasety2));
-                            System.out.println(Double.toString(copasety3));
-
-
-
-
-                             BootstrapButton p1_button = (BootstrapButton) findViewById(button);
-                            String p1= "New Aquarium A   "+Double.toString(copasety1)+"%";
-                            p1_button.setText(p1);
-                            //myTextView.setText(p1);
-
-
-                            BootstrapButton p2_button = (BootstrapButton) findViewById(R.id.button2);
-                            String p2= "New Aquarium C   "+Double.toString(copasety3)+"%";
-                            p2_button.setText(p2);
-
-                            BootstrapButton p3_button = (BootstrapButton) findViewById(R.id.button3);
-                            String p3= "Old  Aquarium       "+Double.toString(copasety3)+"%";
-                            p3_button.setText(p3);
-
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                        Log.d("", "");
-                        Log.d("", "");
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("", "error");
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("", "error");
-            }
-        });
+                });
 // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+                queue.add(stringRequest);
+                RelativeLayout rl = (RelativeLayout) findViewById(R.id.root_view);
+                rl.postDelayed( this, 5000);
+            }
+        };
+
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.root_view);
+        rl.post( runny);
     }
 
 
