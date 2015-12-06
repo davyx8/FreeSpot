@@ -5,10 +5,6 @@ Based on the systems real time data.
 
 credits go to :
 
-Shai Hofman 
-
-Shlomi Shasha
-
-Omer Schechter
+Shai Hofman
 
 and my humble self 
